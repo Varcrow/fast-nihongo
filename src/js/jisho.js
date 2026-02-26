@@ -30,6 +30,3 @@ async function searchJisho(keyword) {
         console.error('Error:', err.message);
     }
 }
-
-//const data = await searchJisho('taberu');
-//console.log(data);

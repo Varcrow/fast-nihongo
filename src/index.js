@@ -12,15 +12,15 @@ const createWindow = () => {
         width: 1920,
         height: 1080,
         webPreferences: {
-            preload: path.join(__dirname, 'js/preload.js'),
-        },
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            sandbox: false,
+            additionalArguments: [`--userDataPath=${app.getPath('userData')}`]
+        }
     });
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
-    // Open the DevTools.
-    //mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -46,6 +46,3 @@ app.on('window-all-closed', () => {
         app.quit();
     }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

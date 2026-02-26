@@ -8,8 +8,21 @@
 </head>
 
 <body>
-    <input class="search-bar" id="search-input" type="text" placeholder="Search...">
-    <div id="search-result-container"></div>
+    <div class="search-controls">
+        <input class="text-bar" id="search-input" type="text" placeholder="Search...">
+        <button id="clear-button" type="button">Clear</button>
+    </div>
+
+    <div class="word-container" id="search-result-container"></div>
+
+    <div class="session-controls">
+        <select id="session-select"></select>
+        <input class="text-bar" id="session-name" type="text" placeholder="Session name...">
+        <button id="save-button" type="button">Save</button>
+        <button id="delete-button" type="button">Delete</button>
+    </div>
+
+    <div class="word-container" id="session-words-container"></div>
 
     <script src="js/jisho.js"></script>
     <script src="js/app.js"></script>

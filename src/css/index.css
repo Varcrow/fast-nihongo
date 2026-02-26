@@ -10,14 +10,24 @@ body {
     font-family: 'Segoe UI', sans-serif;
     min-height: 100vh;
     padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.search-bar {
-    display: block;
+/* ── Search Controls ── */
+
+.search-controls {
+    display: flex;
+    gap: 12px;
+    max-width: 1200px;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto 32px auto;
-    padding: 12px 20px;
+    margin: 0 auto;
+}
+
+.text-bar {
+    flex: 1;
+    padding: 10px 18px;
     font-size: 1rem;
     background-color: #1e1e2e;
     color: #cdd6f4;
@@ -27,22 +37,118 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.search-bar::placeholder {
+.text-bar::placeholder {
     color: #6c7086;
 }
 
-.search-bar:focus {
+.text-bar:focus {
     border-color: #cba6f7;
     box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.15);
 }
 
-#search-result-container {
+/* ── Buttons ── */
+
+button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+#clear-button {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+#clear-button:hover {
+    background-color: #45475a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#save-button {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+}
+
+#save-button:hover {
+    background-color: #94d3a2;
+    box-shadow: 0 4px 12px rgba(166, 227, 161, 0.3);
+}
+
+#delete-button {
+    background-color: #f38ba8;
+    color: #1e1e2e;
+}
+
+#delete-button:hover {
+    background-color: #e87a97;
+    box-shadow: 0 4px 12px rgba(243, 139, 168, 0.3);
+}
+
+/* ── Select ── */
+
+#session-select {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    border: 2px solid #313244;
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    padding-right: 32px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236c7086' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+#session-select:focus {
+    border-color: #cba6f7;
+    box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.15);
+}
+
+#session-select option {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+}
+
+/* ── Session Controls ── */
+
+.session-controls {
+    display: flex;
+    gap: 12px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.session-controls .text-bar {
+    max-width: 240px;
+    flex: none;
+}
+
+/* ── Word Containers ── */
+
+.word-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 16px;
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
 }
+
+/* ── Cards ── */
 
 .card {
     background-color: #1e1e2e;
@@ -104,7 +210,8 @@ body {
     line-height: 1.4;
 }
 
-/* scrollbar */
+/* ── Scrollbar ── */
+
 ::-webkit-scrollbar {
     width: 8px;
 }
