@@ -1,0 +1,123 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #181825;
+    color: #cdd6f4;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    padding: 32px;
+}
+
+.search-bar {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 32px auto;
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    border: 2px solid #313244;
+    border-radius: 999px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-bar::placeholder {
+    color: #6c7086;
+}
+
+.search-bar:focus {
+    border-color: #cba6f7;
+    box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.15);
+}
+
+#search-result-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #1e1e2e;
+    border: 1px solid #313244;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-color: #cba6f7;
+}
+
+.card:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card-word {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #cba6f7;
+}
+
+.card-reading {
+    font-size: 1rem;
+    color: #89b4fa;
+}
+
+.card-level {
+    font-size: 0.75rem;
+    font-weight: bold;
+    background-color: #313244;
+    color: #a6e3a1;
+    padding: 3px 10px;
+    border-radius: 999px;
+    align-self: flex-start;
+    letter-spacing: 0.05em;
+}
+
+.card-meanings {
+    font-size: 0.875rem;
+    color: #cdd6f4;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+.card-pos {
+    font-size: 0.75rem;
+    color: #6c7086;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #181825;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #313244;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #cba6f7;
+}
