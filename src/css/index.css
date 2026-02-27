@@ -23,8 +23,8 @@ body {
     left: 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    z-index: 9999;
+    gap: 1em;
+    z-index: 999;
     pointer-events: none;
 }
 

@@ -85,6 +85,16 @@ deleteButton.addEventListener('click', () => {
     notify(`Session "${name}" deleted`, 'info');
 });
 
+function confirmDeletion() {
+    let confirmElement = document.createElement('div');
+    confirmElement.innerHTML = `
+        <span>${session.sessionName}</span>
+        <p>Delete this session?</p>
+        <button>No</button>
+        <button>Yes</button>
+    `;
+}
+
 // ***** SEARCH *****
 
 async function searchSubmit() {
@@ -124,31 +134,29 @@ function createAllSessionCards(dataArray) {
 
 function appendNewSeachCard(data) {
     const newElement = document.createElement('div');
+    newElement.classList.add('card');
     newElement.innerHTML = `
-        <div class="card">
-            <span class="card-word">${data.word}</span>
-            <span class="card-level">${data.level}</span>
-            <span class="card-reading">${data.reading}</span>
-            <p class="card-meanings">${data.meanings}</p>
-            <p class="card-pos">${data.partsOfSpeech}</p>
-        </div>
+        <span class="card-word">${data.word}</span>
+        <span class="card-level">${data.level}</span>
+        <span class="card-reading">${data.reading}</span>
+        <p class="card-meanings">${data.meanings}</p>
+        <p class="card-pos">${data.partsOfSpeech}</p>
     `;
-    newElement.addEventListener('click', () => addWordToSession(data));
+    newElement.addEventListener('contextmenu', () => addWordToSession(data));
     searchResultContainer.append(newElement);
 }
 
 function appendNewSessionCard(data) {
     const newElement = document.createElement('div');
+    newElement.classList.add('card');
     newElement.innerHTML = `
-        <div class="card">
-            <span class="card-word">${data.word}</span>
-            <span class="card-level">${data.level}</span>
-            <span class="card-reading">${data.reading}</span>
-            <p class="card-meanings">${data.meanings}</p>
-            <p class="card-pos">${data.partsOfSpeech}</p>
-        </div>
+        <span class="card-word">${data.word}</span>
+        <span class="card-level">${data.level}</span>
+        <span class="card-reading">${data.reading}</span>
+        <p class="card-meanings">${data.meanings}</p>
+        <p class="card-pos">${data.partsOfSpeech}</p>
     `;
-    newElement.addEventListener('click', () => {
+    newElement.addEventListener('contextmenu', () => {
         removeWordFromSession(data);
         newElement.remove();
     });
