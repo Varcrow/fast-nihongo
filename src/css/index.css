@@ -15,6 +15,55 @@ body {
     gap: 24px;
 }
 
+/* Notifications */
+
+#notification-container {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.notification {
+    background-color: #1e1e2e;
+    border: 1px solid #313244;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    color: #cdd6f4;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    max-width: 280px;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.info {
+    border-left: 4px solid #89b4fa;
+}
+
+.notification.success {
+    border-left: 4px solid #a6e3a1;
+}
+
+.notification.error {
+    border-left: 4px solid #f38ba8;
+}
+
+.notification.warn {
+    border-left: 4px solid #fab387;
+}
+
 /* ── Search Controls ── */
 
 .search-controls {

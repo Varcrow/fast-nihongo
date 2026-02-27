@@ -12,9 +12,10 @@ let session = {
     sessionWords: [],
 }
 
+let suppressSelectChange = false;
+
 // ***** EVENT HANDLING *****
 
-// Event for handling key presses
 document.addEventListener('keydown', (e) => {
     if (e.key === '/') {
         e.preventDefault();
@@ -25,28 +26,25 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Event to submit after hitting enter while focusing search input
 searchInput.addEventListener('keydown', function(e) {
     if (e.key == 'Enter') {
         searchSubmit();
     }
 });
 
-// Event for clearing search with clear button
 clearButton.addEventListener('click', () => {
     searchResultContainer.innerHTML = '';
+    notify('Search cleared', 'info');
 });
 
-// Load a session when selected from dropdown
 sessionSelect.addEventListener('change', () => {
+    if (suppressSelectChange) return;
     const name = sessionSelect.value;
 
-    // Auto save previous session if it had a name and words
     if (session.sessionName && session.sessionWords.length > 0) {
         window.sessionAPI.save(session);
     }
 
-    // New session on default option
     if (!name) {
         session = { sessionName: '', sessionWords: [] };
         sessionNameInput.value = '';
@@ -61,78 +59,80 @@ sessionSelect.addEventListener('change', () => {
     createAllSessionCards(session.sessionWords);
 });
 
-// Save current session
 saveButton.addEventListener('click', () => {
     const name = sessionNameInput.value.trim();
-    if (!name) return;
+    if (!name) {
+        notify('Please enter a session name', 'warn');
+        return;
+    }
     session.sessionName = name;
     window.sessionAPI.save(session);
-    loadSessionNames();
-    // Select the saved session in the dropdown
-    sessionSelect.value = name;
+    loadSessionNames(name);
+    notify(`Session "${name}" saved`, 'success');
 });
 
-// Delete selected session
 deleteButton.addEventListener('click', () => {
     const name = sessionSelect.value;
-    if (!name) return;
+    if (!name) {
+        notify('No session selected to delete', 'warn');
+        return;
+    }
     window.sessionAPI.delete(name);
     session = { sessionName: '', sessionWords: [] };
     sessionNameInput.value = '';
     sessionWordsContainer.innerHTML = '';
     loadSessionNames();
+    notify(`Session "${name}" deleted`, 'info');
 });
+
+// ***** SEARCH *****
 
 async function searchSubmit() {
     const value = searchInput.value.trim();
-    if (value === '') return;
+    if (!value) {
+        notify('Please enter a search term', 'warn');
+        return;
+    }
     const words = value.split(' ');
-    const wordDataArray = []
-    searchInput.value = "";
+    const wordDataArray = [];
+    searchInput.value = '';
 
     for (const word of words) {
         const wordData = await searchJisho(word);
         if (wordData != null) {
-            wordData.forEach(
-                data => {
-                    wordDataArray.push(data);
-                })
+            wordData.forEach(data => wordDataArray.push(data));
         }
     }
 
-    createAllSearchCards(wordDataArray)
+    if (wordDataArray.length > 0) {
+        createAllSearchCards(wordDataArray);
+    }
 }
 
-// ***** CREATING NEW CARDS *****
+// ***** CREATING CARDS *****
 
-async function createAllSearchCards(dataArray) {
+function createAllSearchCards(dataArray) {
     searchResultContainer.innerHTML = '';
-    dataArray.forEach(data => {
-        data = trimWordData(data);
-        appendNewSeachCard(data)
-    });
+    const trimmed = dataArray.map(trimWordData).filter(Boolean);
+    trimmed.forEach(data => appendNewSeachCard(data));
 }
 
 function createAllSessionCards(dataArray) {
     sessionWordsContainer.innerHTML = '';
-
-    dataArray.forEach(data => {
-        appendNewSessionCard(data);
-    });
+    dataArray.forEach(data => appendNewSessionCard(data));
 }
 
 function appendNewSeachCard(data) {
     const newElement = document.createElement('div');
     newElement.innerHTML = `
-            <div class="card">
-                <span class="card-word">${data.word}</span>
-                <span class="card-level">${data.level}</span>
-                <span class="card-reading">${data.reading}</span>
-                <p class="card-meanings">${data.meanings}</p>
-                <p class="card-pos">${data.partsOfSpeech}</p>
-            </div>
-        `;
-
+        <div class="card">
+            <span class="card-word">${data.word}</span>
+            <span class="card-level">${data.level}</span>
+            <span class="card-reading">${data.reading}</span>
+            <p class="card-meanings">${data.meanings}</p>
+            <p class="card-pos">${data.partsOfSpeech}</p>
+        </div>
+    `;
     newElement.addEventListener('click', () => addWordToSession(data));
     searchResultContainer.append(newElement);
 }
@@ -140,29 +140,32 @@ function appendNewSeachCard(data) {
 function appendNewSessionCard(data) {
     const newElement = document.createElement('div');
     newElement.innerHTML = `
-            <div class="card">
-                <span class="card-word">${data.word}</span>
-                <span class="card-level">${data.level}</span>
-                <span class="card-reading">${data.reading}</span>
-                <p class="card-meanings">${data.meanings}</p>
-                <p class="card-pos">${data.partsOfSpeech}</p>
-            </div>
-        `;
+        <div class="card">
+            <span class="card-word">${data.word}</span>
+            <span class="card-level">${data.level}</span>
+            <span class="card-reading">${data.reading}</span>
+            <p class="card-meanings">${data.meanings}</p>
+            <p class="card-pos">${data.partsOfSpeech}</p>
+        </div>
+    `;
     newElement.addEventListener('click', () => {
         removeWordFromSession(data);
         newElement.remove();
-    })
+    });
     sessionWordsContainer.append(newElement);
 }
 
 // ***** UTIL *****
+
 function trimWordData(data) {
+    if (!data.japanese || data.japanese.length === 0) return null;
+    if (!data.senses || data.senses.length === 0) return null;
     return {
         word: data.japanese[0].word ?? 'N/A',
         reading: data.japanese[0].reading ?? 'N/A',
         level: data.jlpt[0] ?? 'N/A',
-        meanings: data.senses[0].english_definitions.join(', '),
-        partsOfSpeech: data.senses[0].parts_of_speech.join(', '),
+        meanings: data.senses[0].english_definitions?.join(', ') ?? 'N/A',
+        partsOfSpeech: data.senses[0].parts_of_speech?.join(', ') ?? 'N/A',
     };
 }
 
@@ -174,18 +177,24 @@ function sessionContainsWord(data) {
 }
 
 function addWordToSession(data) {
-    if (sessionContainsWord(data)) return;
+    if (sessionContainsWord(data)) {
+        notify(`"${data.word}" is already in the session`, 'warn');
+        return;
+    }
     session.sessionWords.push(data);
     appendNewSessionCard(data);
+    notify(`"${data.word}" added to session`, 'success');
 }
 
 function removeWordFromSession(data) {
     session.sessionWords = session.sessionWords.filter(w =>
         !(w.word === data.word && w.reading === data.reading)
     );
+    notify(`"${data.word}" removed from session`, 'info');
 }
 
-function loadSessionNames() {
+function loadSessionNames(preserveValue) {
+    suppressSelectChange = true;
     const names = window.sessionAPI.getNames();
     sessionSelect.innerHTML = '<option value="">New Session</option>';
     names.forEach(name => {
@@ -194,6 +203,8 @@ function loadSessionNames() {
         option.textContent = name;
         sessionSelect.appendChild(option);
     });
+    if (preserveValue) sessionSelect.value = preserveValue;
+    suppressSelectChange = false;
 }
 
 loadSessionNames();
