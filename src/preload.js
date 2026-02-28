@@ -3,30 +3,43 @@ const fs = require('fs');
 const path = require('path');
 
 const userDataPath = process.argv.find(a => a.startsWith('--userDataPath=')).split('=')[1];
-const SESSION_FILE = path.join(userDataPath, 'sessions.json');
+const WORDLIST_FILE = path.join(userDataPath, 'wordlists.json');
+const SETTINGS_FILE = path.join(userDataPath, 'settings.json');
 
 function readFile() {
-    if (!fs.existsSync(SESSION_FILE)) return {};
-    return JSON.parse(fs.readFileSync(SESSION_FILE, 'utf-8'));
+    if (!fs.existsSync(WORDLIST_FILE)) return {};
+    return JSON.parse(fs.readFileSync(WORDLIST_FILE, 'utf-8'));
 }
 
-contextBridge.exposeInMainWorld('sessionAPI', {
+// Wordlist api
+contextBridge.exposeInMainWorld('wordlistAPI', {
     getNames: () => {
-        const sessions = readFile();
-        return Object.keys(sessions);
+        const wordlists = readFile();
+        return Object.keys(wordlists);
     },
-    save: (session) => {
-        const sessions = readFile();
-        sessions[session.sessionName] = session;
-        fs.writeFileSync(SESSION_FILE, JSON.stringify(sessions, null, 2));
+    save: (wordlist) => {
+        const wordlists = readFile();
+        wordlists[wordlist.name] = wordlist;
+        fs.writeFileSync(WORDLIST_FILE, JSON.stringify(wordlists, null, 2));
     },
-    load: (sessionName) => {
-        const sessions = readFile();
-        return sessions[sessionName] ?? null;
+    load: (name) => {
+        const wordlists = readFile();
+        return wordlists[name] ?? null;
     },
-    delete: (sessionName) => {
-        const sessions = readFile();
-        delete sessions[sessionName];
-        fs.writeFileSync(SESSION_FILE, JSON.stringify(sessions, null, 2));
+    delete: (name) => {
+        const wordlists = readFile();
+        delete wordlists[name];
+        fs.writeFileSync(WORDLIST_FILE, JSON.stringify(wordlists, null, 2));
     }
+});
+
+// Settings api
+contextBridge.exposeInMainWorld('settingsAPI', {
+    load: () => {
+        if (!fs.existsSync(SETTINGS_FILE)) return {};
+        return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf-8'));
+    },
+    save: (settings) => {
+        fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+    },
 });
