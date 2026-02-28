@@ -1,14 +1,16 @@
-/* ── Theme Variables ── */
-
+/* ── Variables ───────────────────────────────────────────── */
 :root {
+    /* Backgrounds */
     --bg-base: #181825;
     --bg-surface: #1e1e2e;
     --bg-overlay: #313244;
     --bg-muted: #45475a;
 
+    /* Text */
     --text-primary: #cdd6f4;
     --text-muted: #6c7086;
 
+    /* Accents */
     --accent: #cba6f7;
     --accent-blue: #89b4fa;
     --accent-green: #a6e3a1;
@@ -16,31 +18,34 @@
     --accent-red: #f38ba8;
     --accent-red2: #e87a97;
 
+    /* Shadows & Glows */
     --shadow-dark: rgba(0, 0, 0, 0.5);
     --shadow-soft: rgba(0, 0, 0, 0.3);
     --glow-accent: rgba(203, 166, 247, 0.2);
     --glow-green: rgba(166, 227, 161, 0.3);
     --glow-red: rgba(243, 139, 168, 0.3);
 
+    /* Radii */
     --radius-pill: 999px;
     --radius-card: 20px;
     --radius-sm: 10px;
 
+    /* Compound shadows */
     --shadow-float: 0 8px 32px var(--shadow-dark), 0 2px 8px var(--shadow-soft);
     --shadow-hover: 0 16px 40px var(--shadow-dark), 0 4px 12px var(--glow-accent);
-
-    --transition-expand: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ── Reset ───────────────────────────────────────────────── */
 * {
     padding: 0;
     margin: 0;
+    border: 0;
+    outline: 0;
     box-sizing: border-box;
     color: var(--text-primary);
 }
 
+/* ── Layout ──────────────────────────────────────────────── */
 body {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -52,31 +57,103 @@ body {
     height: 100vh;
     padding: 20px;
     background-color: var(--bg-base);
+    font-family: 'Segoe UI', sans-serif;
 }
 
-#overlay,
+/* ── Fixed Overlays ──────────────────────────────────────── */
+#menu-container,
 #notification-container,
-#menu-container {
+#overlay {
     position: fixed;
 }
 
-.search-bar {
-    padding: 6px;
-    font-size: 1.2em;
-    text-align: center;
-    border: 0;
+#overlay {
+    display: none;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 200;
 }
 
-nav,
+/* ── Nav ─────────────────────────────────────────────────── */
+nav {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 1em;
+}
+
+#wordlists-container {
+    flex: 1;
+}
+
+/* ── Shared Surface Styles ───────────────────────────────── */
+.search-bar,
+input[type="text"],
 main,
-.search-bar {
+nav {
     background-color: var(--bg-surface);
     box-shadow: var(--shadow-float);
     border-radius: var(--radius-sm);
+    border: 2px solid var(--bg-overlay);
 }
 
+/* ── Inputs ──────────────────────────────────────────────── */
+.search-bar {
+    font-size: 1.2em;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-.sidebar {
-    height: 100%;
-    background-color: var(--bg-surface);
+input[type="text"] {
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-bar:focus,
+input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 8px 32px var(--glow-accent), 0 2px 8px var(--shadow-soft);
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+button {
+    color: var(--text-primary);
+    background-color: var(--accent);
+    border-radius: 6px;
+    padding: 8px 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1em;
+}
+
+button.save {
+    flex: 1;
+    color: var(--text-muted);
+    background-color: var(--accent-green);
+}
+
+button.delete {
+    flex: 1;
+    background-color: var(--accent-red);
+}
+
+button.wordlist {
+    background-color: var(--accent-blue);
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--bg-overlay);
 }

@@ -14,16 +14,16 @@
     <div id="menu-container"></div>
 
     <!--SEARCH BAR-->
-    <input class="search-bar box" type="text" style="grid-area: box-1">
+    <input class="search-bar" type="text" style="grid-area: box-1">
 
     <!--SIDE BAR-->
-    <nav class="box" style="grid-area: box-2">
+    <nav style="grid-area: box-2">
         <input type="text" placeholder="New wordlist">
         <div class="buttons">
-            <button type="button">Save</button>
-            <button type="button">Delete</button>
+            <button class="save" type="button">Save</button>
+            <button class="delete" type="button">Delete</button>
         </div>
-        <button type="button">New Wordlist</button>
+        <button class="wordlist" type="button">New Wordlist</button>
         <div class="divider"></div>
         <div id="wordlists-container"></div>
         <div class="divider"></div>
@@ -31,7 +31,7 @@
     </nav>
 
     <!--CONTENT DISPLAY-->
-    <main class="box" style="grid-area: box-3">
+    <main style="grid-area: box-3">
         <div class="word-container" id="search-result-container"></div>
         <div class="word-container" id="wordlist-words-container"></div>
     </main>
