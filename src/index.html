@@ -4,32 +4,34 @@
 <head>
     <meta charset="UTF-8" />
     <title>Fast Nihongo</title>
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/dev.css" />
 </head>
 
 <body>
+    <!--FIXED ITEMS-->
     <div id="overlay"></div>
-    <div id="menu-container" class="menu-panel"></div>
-
-    <div class="sidebar float">
-        <div class="sidebar-controls">
-            <input class="text-bar" id="wordlist-name" type="text" placeholder="New wordlist">
-            <div class="sidebar-buttons">
-                <button id="save-button" type="button">Save</button>
-                <button id="delete-button" type="button">Delete</button>
-            </div>
-            <button id="new-wordlist-button" type="button">New Wordlist</button>
-        </div>
-        <div class="sidebar-divider"></div>
-        <div id="sidebar-wordlists"></div>
-        <div class="sidebar-divider"></div>
-        <button id="settings-button" type="button">⚙ Settings</button>
-    </div>
     <div id="notification-container"></div>
-    <div class="search-controls float">
-        <input class="text-bar" id="search-input" type="text">
-    </div>
-    <main>
+    <div id="menu-container"></div>
+
+    <!--SEARCH BAR-->
+    <input class="search-bar box" type="text" style="grid-area: box-1">
+
+    <!--SIDE BAR-->
+    <nav class="box" style="grid-area: box-2">
+        <input type="text" placeholder="New wordlist">
+        <div class="buttons">
+            <button type="button">Save</button>
+            <button type="button">Delete</button>
+        </div>
+        <button type="button">New Wordlist</button>
+        <div class="divider"></div>
+        <div id="wordlists-container"></div>
+        <div class="divider"></div>
+        <button type="button">Settings</button>
+    </nav>
+
+    <!--CONTENT DISPLAY-->
+    <main class="box" style="grid-area: box-3">
         <div class="word-container" id="search-result-container"></div>
         <div class="word-container" id="wordlist-words-container"></div>
     </main>
