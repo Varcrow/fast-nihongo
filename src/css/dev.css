@@ -1,51 +1,33 @@
-/* ── Variables ───────────────────────────────────────────── */
 :root {
-    /* Backgrounds */
-    --bg-base: #181825;
-    --bg-surface: #1e1e2e;
-    --bg-overlay: #313244;
-    --bg-muted: #45475a;
-
-    /* Text */
-    --text-primary: #cdd6f4;
-    --text-muted: #6c7086;
-
-    /* Accents */
-    --accent: #cba6f7;
+    --bg: #e0e5ec;
+    --text: #4a5568;
+    --text-muted: #8896a7;
+    --shadow-dark: #a3b1c6;
+    --shadow-light: #ffffff;
+    --blur: 16px;
+    --radius: 16px;
+    --accent-purple: #cba6f7;
     --accent-blue: #89b4fa;
     --accent-green: #a6e3a1;
     --accent-green2: #94d3a2;
     --accent-red: #f38ba8;
     --accent-red2: #e87a97;
-
-    /* Shadows & Glows */
-    --shadow-dark: rgba(0, 0, 0, 0.5);
-    --shadow-soft: rgba(0, 0, 0, 0.3);
-    --glow-accent: rgba(203, 166, 247, 0.2);
-    --glow-green: rgba(166, 227, 161, 0.3);
-    --glow-red: rgba(243, 139, 168, 0.3);
-
-    /* Radii */
-    --radius-pill: 999px;
-    --radius-card: 20px;
-    --radius-sm: 10px;
-
-    /* Compound shadows */
-    --shadow-float: 0 8px 32px var(--shadow-dark), 0 2px 8px var(--shadow-soft);
-    --shadow-hover: 0 16px 40px var(--shadow-dark), 0 4px 12px var(--glow-accent);
 }
 
-/* ── Reset ───────────────────────────────────────────────── */
+/* Reset */
+
 * {
     padding: 0;
     margin: 0;
     border: 0;
     outline: 0;
     box-sizing: border-box;
-    color: var(--text-primary);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
 }
 
-/* ── Layout ──────────────────────────────────────────────── */
+/* Main Layout */
+
 body {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -56,11 +38,11 @@ body {
     gap: 1em;
     height: 100vh;
     padding: 20px;
-    background-color: var(--bg-base);
-    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg);
 }
 
-/* ── Fixed Overlays ──────────────────────────────────────── */
+/* Fixed Items */
+
 #menu-container,
 #notification-container,
 #overlay {
@@ -75,7 +57,8 @@ body {
     z-index: 200;
 }
 
-/* ── Nav ─────────────────────────────────────────────────── */
+/* Nav Layout */
+
 nav {
     display: flex;
     flex-direction: column;
@@ -87,73 +70,72 @@ nav {
     flex: 1;
 }
 
-/* ── Shared Surface Styles ───────────────────────────────── */
-.search-bar,
-input[type="text"],
-main,
-nav {
-    background-color: var(--bg-surface);
-    box-shadow: var(--shadow-float);
-    border-radius: var(--radius-sm);
-    border: 2px solid var(--bg-overlay);
+/* Neumorphism Components */
+
+.neu-card {
+    background: var(--bg);
+    border-radius: var(--radius);
+    box-shadow:
+        8px 8px var(--blur) var(--shadow-dark),
+        -8px -8px var(--blur) var(--shadow-light)
 }
 
-/* ── Inputs ──────────────────────────────────────────────── */
-.search-bar {
-    font-size: 1.2em;
-    text-align: center;
-    transition: border-color 0.2s, box-shadow 0.2s;
+.neu-inset {
+    background: var(--bg);
+    border-radius: var(--radius);
+    box-shadow:
+        inset 8px 8px var(--blur) var(--shadow-dark),
+        inset -8px -8px var(--blur) var(--shadow-light)
 }
 
-input[type="text"] {
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-size: 1rem;
-    text-align: center;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.search-bar:focus,
-input[type="text"]:focus {
-    border-color: var(--accent);
-    box-shadow: 0 8px 32px var(--glow-accent), 0 2px 8px var(--shadow-soft);
-}
-
-/* ── Buttons ─────────────────────────────────────────────── */
-button {
-    color: var(--text-primary);
-    background-color: var(--accent);
-    border-radius: 6px;
-    padding: 8px 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.15s;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 1em;
-}
-
-button.save {
-    flex: 1;
-    color: var(--text-muted);
-    background-color: var(--accent-green);
-}
-
-button.delete {
-    flex: 1;
-    background-color: var(--accent-red);
-}
-
-button.wordlist {
-    background-color: var(--accent-blue);
-}
-
-/* ── Divider ─────────────────────────────────────────────── */
-.divider {
+.neu-input {
     width: 100%;
-    height: 1px;
-    background-color: var(--bg-overlay);
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    text-align: center;
+    color: var(--text);
+    box-shadow:
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+    transition: box-shadow 0.2s;
+}
+
+.neu-input::placeholder {
+    color: var(--text-muted);
+}
+
+.neu-input:focus {
+    box-shadow:
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light),
+        0 0 0 3px rgba(108, 142, 191, 0.25);
+}
+
+.neu-btn {
+    background: var(--bg);
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent);
+    cursor: pointer;
+    box-shadow:
+        6px 6px 12px var(--shadow-dark),
+        -6px -6px 12px var(--shadow-light);
+    transition: all 0.15s ease;
+    letter-spacing: 0.03em;
+}
+
+.neu-btn:hover {
+    color: #4a6fa5;
+}
+
+.neu-btn:active {
+    box-shadow:
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+    color: var(--accent);
 }

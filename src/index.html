@@ -5,33 +5,33 @@
     <meta charset="UTF-8" />
     <title>Fast Nihongo</title>
     <link rel="stylesheet" href="css/dev.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
     <!--FIXED ITEMS-->
-    <div id="overlay"></div>
     <div id="notification-container"></div>
     <div id="menu-container"></div>
 
     <!--SEARCH BAR-->
-    <input class="search-bar" type="text" style="grid-area: box-1">
+    <input class="neu-input" type="text" style="grid-area: box-1" placeholder="Search">
 
     <!--SIDE BAR-->
-    <nav style="grid-area: box-2">
-        <input type="text" placeholder="New wordlist">
+    <nav class="neu-card" style="grid-area: box-2">
+        <input class="neu-input" type="text" placeholder="New wordlist">
         <div class="buttons">
-            <button class="save" type="button">Save</button>
-            <button class="delete" type="button">Delete</button>
+            <button class="neu-btn save" type="button">Save</button>
+            <button class="neu-btn delete" type="button">Delete</button>
         </div>
-        <button class="wordlist" type="button">New Wordlist</button>
-        <div class="divider"></div>
+        <button class="neu-btn wordlist" type="button">New Wordlist</button>
         <div id="wordlists-container"></div>
-        <div class="divider"></div>
-        <button type="button">Settings</button>
+        <button class="neu-btn" type="button">Settings</button>
     </nav>
 
     <!--CONTENT DISPLAY-->
-    <main style="grid-area: box-3">
+    <main class="neu-card" style="grid-area: box-3">
         <div class="word-container" id="search-result-container"></div>
         <div class="word-container" id="wordlist-words-container"></div>
     </main>
