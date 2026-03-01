@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Wordlists</title>
-    <link rel="stylesheet" href="css/dev.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
         rel="stylesheet">
@@ -15,13 +15,13 @@
     <div id="notification-container"></div>
 
     <!--SEARCH BAR-->
-    <input class="neu-input" type="text" style="grid-area: box-1" placeholder="Search">
+    <input id="search-bar" class="neu-input" type="text" style="grid-area: box-1" placeholder="Search">
 
     <!--SIDE BAR-->
     <nav class="neu-card" style="grid-area: box-2">
-        <input class="neu-input" type="text" placeholder="New wordlist">
+        <input id="wordlist-name" class="neu-input" type="text" placeholder="New wordlist">
         <div class="dual-buttons">
-            <button class="neu-btn save" type="button">Save</button>
+            <button id="save" class="neu-btn save" type="button">Save</button>
             <button id="delete" class="neu-btn delete" type="button">Delete</button>
         </div>
 
@@ -47,7 +47,13 @@
         </div>
 
         <div id="wordlists-container"></div>
-        <button class="neu-btn" type="button">Settings</button>
+
+        <div id="settings-menu" class="neu-card menu">
+            <h2>Settings</h2>
+            <div id="settings-fields"></div>
+            <button id="settings-save" class="neu-btn" type="button">Save</button>
+        </div>
+        <button id="settings" class="neu-btn" type="button">Settings</button>
     </nav>
 
     <!--CONTENT DISPLAY-->
@@ -57,7 +63,10 @@
     </main>
 
     <!--SCRIPTS-->
-    <script src="js/input.js"></script>
+    <script src="js/notify.js"></script>
+    <script src="js/wordlist.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="renderer.js"></script>
 </body>
 
 </html>

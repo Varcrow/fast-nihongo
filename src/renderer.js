@@ -1,7 +1,13 @@
 // ***** DOM REFERENCES *****
 
+// Search bar
+const searchBar = document.getElementById('search-bar');
+
+// Wordlist name
+const wordlistName = document.getElementById('wordlist-name');
+
 // Save button
-const saveButton;
+const saveButton = document.getElementById('save');
 
 // Delete button/menu
 const deleteMenu = document.getElementById('delete-menu');
@@ -17,19 +23,110 @@ const newWordlistCreate = document.getElementById('new-wordlist-create');
 const newWordlistLanguage = document.getElementById('new-wordlist-language');
 const newWordlistLanguageDisplay = document.getElementById('new-wordlist-language-display');
 
+// Settings button/menu
+const settingsButton = document.getElementById('settings');
+const settingsMenu = document.getElementById('settings-menu');
+const settingsSave = document.getElementById('settings-save');
+
 // Containers
+const wordlistsContainer = document.getElementById('wordlists-container');
+const searchResultsContainer = document.getElementById('search-result-container');
+const wordlistWordContainer = document.getElementById('wordlist-words-container');
+
+// Builds the settings menu UI dynamically from SETTINGS schema
+function buildSettingsMenu() {
+    const container = document.getElementById('settings-fields');
+    if (!container) return;
+    const current = settingsManager.load();
+    container.innerHTML = '';
+
+    SETTINGS.forEach(s => {
+        const row = document.createElement('div');
+        row.classList.add('settings-row');
+
+        const label = document.createElement('label');
+        label.textContent = s.label;
+        label.setAttribute('for', `setting-${s.id}`);
+        row.appendChild(label);
+
+        let input;
+        if (s.type === 'select') {
+            input = document.createElement('select');
+            input.classList.add('neu-input');
+            s.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.label;
+                if (current[s.id] === opt.value) option.selected = true;
+                input.appendChild(option);
+            });
+        } else if (s.type === 'number') {
+            input = document.createElement('input');
+            input.classList.add('neu-input');
+            input.type = 'number';
+            input.min = s.min;
+            input.max = s.max;
+            input.value = current[s.id];
+        } else if (s.type === 'toggle') {
+            input = document.createElement('input');
+            input.type = 'checkbox';
+            input.classList.add('neu-toggle');
+            input.checked = current[s.id];
+        }
+
+        input.id = `setting-${s.id}`;
+        row.appendChild(input);
+        container.appendChild(row);
+    });
+}
+
+// Reads current values from the settings menu UI and saves them
+function saveSettings() {
+    const values = {};
+    SETTINGS.forEach(s => {
+        const input = document.getElementById(`setting-${s.id}`);
+        if (!input) return;
+        if (s.type === 'toggle') {
+            values[s.id] = input.checked;
+        } else if (s.type === 'number') {
+            values[s.id] = Number(input.value);
+        } else {
+            values[s.id] = input.value;
+        }
+    });
+    settingsManager.save(values);
+    notify('Settings saved', 'success');
+    closeMenu();
+}
 
 // ***** WORDLIST *****
 
 let wordlist;
 
-// ***** LANGUAGE REGISTRY && WORDLIST MANAGEMENT *****
+// ***** LANGUAGE REGISTRY *****
 
 const languageRegistry = {
     japanese: JapaneseWordlist,
     english: null,
     french: null,
 };
+
+const languageIds = Object.keys(languageRegistry);
+let selectedLanguageId = languageIds[0];
+
+function setLanguageDisplay(languageId) {
+    selectedLanguageId = languageId;
+    newWordlistLanguageDisplay.textContent =
+        languageId.charAt(0).toUpperCase() + languageId.slice(1);
+}
+
+function cycleLanguage() {
+    const currentIndex = languageIds.indexOf(selectedLanguageId);
+    const nextIndex = (currentIndex + 1) % languageIds.length;
+    setLanguageDisplay(languageIds[nextIndex]);
+}
+
+// ***** WORDLIST MANAGEMENT *****
 
 function createWordlist(languageId, name = '', words = []) {
     const WordlistClass = languageRegistry[languageId];
@@ -39,20 +136,20 @@ function createWordlist(languageId, name = '', words = []) {
 
 function newWordlist(languageId) {
     wordlist = createWordlist(languageId);
-    wordlistNameInput.value = '';
-    wordlistWordsContainer.innerHTML = '';
+    wordlistName.value = '';
+    wordlistWordContainer.innerHTML = '';
 }
 
 function loadWordlist(name) {
     const loaded = window.wordlistAPI.load(name);
     if (!loaded) return;
     wordlist = createWordlist(loaded.languageId ?? 'japanese', loaded.name, loaded.words);
-    wordlistNameInput.value = wordlist.name;
+    wordlistName.value = wordlist.name;
     createAllWordlistCards(wordlist.words);
 }
 
 function saveWordlist() {
-    const name = wordlistNameInput.value.trim();
+    const name = wordlistName.value.trim();
     if (!name) {
         notify('Please enter a wordlist name', 'warn');
         return;
@@ -64,12 +161,17 @@ function saveWordlist() {
 }
 
 function deleteWordlist() {
+    const name = wordlist.name;
+    window.wordlistAPI.delete(name);
+    notify(`Wordlist "${name}" deleted`, 'info');
+    newWordlist(selectedLanguageId);
+    refreshSidebar();
 }
 
 // ***** SIDEBAR *****
 
 function refreshSidebar() {
-    sidebarWordlistContainer.innerHTML = '';
+    wordlistsContainer.innerHTML = '';
     const names = window.wordlistAPI.getNames();
 
     names.forEach(name => {
@@ -77,21 +179,22 @@ function refreshSidebar() {
         el.classList.add('wordlist-button');
         el.innerHTML = `<span>${name}</span>`;
         el.addEventListener('click', () => loadWordlist(name));
-        sidebarWordlistContainer.appendChild(el);
+        wordlistsContainer.appendChild(el);
     });
 }
 
 // ***** SEARCH *****
 
 async function searchSubmit() {
-    const value = searchInput.value.trim();
+    const value = searchBar.value.trim();
     if (!value) {
         notify('Please enter a search term', 'warn');
         return;
     }
-    searchInput.value = '';
+    searchBar.value = '';
 
-    const results = await Promise.all(value.split(' ').map(w => wordlist.search(w)));
+    const resultLimit = settingsManager.get('resultLimit');
+    const results = await Promise.all(value.split(' ').map(w => wordlist.search(w, resultLimit)));
     const wordDataArray = results.filter(Boolean).flat();
 
     if (wordDataArray.length > 0) {
@@ -102,18 +205,19 @@ async function searchSubmit() {
 // ***** CARD RENDERING *****
 
 function createAllSearchCards(dataArray) {
-    searchResultContainer.innerHTML = '';
+    searchResultsContainer.innerHTML = '';
     dataArray.forEach(appendNewSearchCard);
 }
 
 function createAllWordlistCards(dataArray) {
-    wordlistWordsContainer.innerHTML = '';
+    wordlistWordContainer.innerHTML = '';
     dataArray.forEach(appendNewWordlistCard);
 }
 
 function appendNewSearchCard(data) {
     const el = wordlist.buildCard(data);
-    el.addEventListener('contextmenu', () => {
+    el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
         const added = wordlist.addWord(data);
         if (added) {
             appendNewWordlistCard(data);
@@ -122,20 +226,22 @@ function appendNewSearchCard(data) {
             notify(`"${data.word}" is already in the wordlist`, 'warn');
         }
     });
-    searchResultContainer.append(el);
+    searchResultsContainer.append(el);
 }
 
 function appendNewWordlistCard(data) {
     const el = wordlist.buildCard(data);
-    el.addEventListener('contextmenu', () => {
+    el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
         wordlist.removeWord(data);
         el.remove();
         notify(`"${data.word}" removed from wordlist`, 'info');
     });
-    wordlistWordsContainer.append(el);
+    wordlistWordContainer.append(el);
 }
 
 // ***** LOGIC FOR OPENING/CLOSING MENUS *****
+
 let menuToClose = null;
 
 function openMenu(menu) {
@@ -155,29 +261,33 @@ function closeMenu() {
 document.addEventListener('keydown', (e) => {
     if (e.key === '/') {
         e.preventDefault();
-        searchInput.focus();
+        searchBar.focus();
     }
     if (e.key === 'Escape') {
-        searchInput.blur();
-        closeOverlay();
+        searchBar.blur();
+        closeMenu();
     }
 });
 
-// Event that closes current menu when clicking another menu button or outside of current menu
+// Close menu when clicking outside of it or on another menu button
 document.addEventListener('click', (e) => {
     if (!menuToClose) return;
     if (e.target.closest('.menu.open')) return;
-    if (e.target.closest('#delete, #new-wordlist-btn')) return;
+    if (e.target.closest('#delete, #new-wordlist-btn, #settings')) return;
     closeMenu();
 }, true);
 
-// Search input
-searchInput.addEventListener('keydown', (e) => {
+// Search
+searchBar.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchSubmit();
 });
 
-// Delete buttons/menu
+// Delete button/menu
 deleteButton.addEventListener('click', () => {
+    if (!wordlist?.name) {
+        notify('No wordlist selected to delete', 'warn');
+        return;
+    }
     openMenu(deleteMenu);
 });
 
@@ -186,10 +296,11 @@ deleteNoButton.addEventListener('click', () => {
 });
 
 deleteYesButton.addEventListener('click', () => {
-    // TODO: confirm delete — delete the current wordlist
+    deleteWordlist();
+    closeMenu();
 });
 
-// Save button
+// Save
 saveButton.addEventListener('click', saveWordlist);
 
 // New wordlist menu
@@ -198,26 +309,40 @@ newWordlistBtn.addEventListener('click', () => {
 });
 
 newWordlistCreate.addEventListener('click', () => {
-    // TODO: create a new wordlist using newWordlistNameInput.value and selected language
+    const name = newWordlistNameInput.value.trim();
+    if (!name) {
+        notify('Please enter a wordlist name', 'warn');
+        return;
+    }
+    if (!languageRegistry[selectedLanguageId]) {
+        notify(`${selectedLanguageId} is not supported yet`, 'warn');
+        return;
+    }
+    newWordlist(selectedLanguageId);
+    wordlistName.value = name;
+    wordlist.name = name;
+    newWordlistNameInput.value = '';
+    closeMenu();
+    notify(`New ${selectedLanguageId} wordlist "${name}" created`, 'success');
 });
 
 newWordlistLanguage.addEventListener('click', () => {
-    // TODO: open language picker / cycle through languages
+    cycleLanguage();
 });
 
-
-deleteButton.addEventListener('click', () => {
-    if (!wordlist.name) {
-        notify('No wordlist selected to delete', 'warn');
-        return;
-    }
-    openMenu(menuContainer, 'confirmDeletion')
+// Settings button/menu
+settingsButton.addEventListener('click', () => {
+    buildSettingsMenu();
+    openMenu(settingsMenu);
 });
-newWordlistButton.addEventListener('click', () => openMenu(menuContainer, 'newWordlist'));
-settingsButton.addEventListener('click', () => openMenu(menuContainer, 'settings'));
-overlay.addEventListener('click', () => closeOverlay());
+
+settingsSave.addEventListener('click', () => {
+    saveSettings();
+});
 
 // ***** INIT *****
 
+const defaultLanguage = settingsManager.get('defaultLanguage');
+setLanguageDisplay(defaultLanguage);
 refreshSidebar();
-newWordlist(settingsManager.get('defaultLanguage'));
+newWordlist(defaultLanguage);
