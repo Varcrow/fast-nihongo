@@ -109,8 +109,8 @@ function refreshSidebar() {
 
     names.forEach(name => {
         const el = document.createElement('div');
-        el.classList.add('wordlist-button');
-        el.innerHTML = `<span>${name}</span>`;
+        el.classList.add('neu-btn');
+        el.innerHTML = `<h3>${name}</h3>`;
         el.addEventListener('click', () => loadWordlist(name));
         wordlistsContainer.appendChild(el);
     });
