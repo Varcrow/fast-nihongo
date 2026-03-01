@@ -84,19 +84,16 @@ function loadWordlist(name) {
 function saveWordlist() {
     const name = wordlistName.value.trim();
     if (!name) {
-        notify('Please enter a wordlist name', 'warn');
         return;
     }
     wordlist.name = name;
     wordlist.save();
-    notify(`Wordlist "${name}" saved`, 'success');
     refreshSidebar();
 }
 
 function deleteWordlist() {
     const name = wordlist.name;
     window.wordlistAPI.delete(name);
-    notify(`Wordlist "${name}" deleted`, 'info');
     newWordlist(selectedLanguageId);
     refreshSidebar();
 }
@@ -121,7 +118,6 @@ function refreshSidebar() {
 async function searchSubmit() {
     const value = searchBar.value.trim();
     if (!value) {
-        notify('Please enter a search term', 'warn');
         return;
     }
     searchBar.value = '';
@@ -154,9 +150,6 @@ function appendNewSearchCard(data) {
         const added = wordlist.addWord(data);
         if (added) {
             appendNewWordlistCard(data);
-            notify(`"${data.word}" added to wordlist`, 'success');
-        } else {
-            notify(`"${data.word}" is already in the wordlist`, 'warn');
         }
     });
     searchResultsContainer.append(el);
@@ -168,7 +161,6 @@ function appendNewWordlistCard(data) {
         e.preventDefault();
         wordlist.removeWord(data);
         el.remove();
-        notify(`"${data.word}" removed from wordlist`, 'info');
     });
     wordlistWordContainer.append(el);
 }
@@ -244,11 +236,9 @@ newWordlistBtn.addEventListener('click', () => {
 newWordlistCreate.addEventListener('click', () => {
     const name = newWordlistNameInput.value.trim();
     if (!name) {
-        notify('Please enter a wordlist name', 'warn');
         return;
     }
     if (!languageRegistry[selectedLanguageId]) {
-        notify(`${selectedLanguageId} is not supported yet`, 'warn');
         return;
     }
     newWordlist(selectedLanguageId);
@@ -256,7 +246,6 @@ newWordlistCreate.addEventListener('click', () => {
     wordlist.name = name;
     newWordlistNameInput.value = '';
     closeMenu();
-    notify(`New ${selectedLanguageId} wordlist "${name}" created`, 'success');
 });
 
 newWordlistLanguage.addEventListener('click', () => {

@@ -79,11 +79,11 @@ class JapaneseWordlist extends Wordlist {
     }
     buildCard(data) {
         const el = document.createElement('div');
-        el.classList.add('card');
+        el.classList.add('neu-card');
         el.innerHTML = `
-            <span class="card-word">${data.word}</span>
-            <span class="card-level">${data.level}</span>
-            <span class="card-reading">${data.reading}</span>
+            <h2 class="card-word">${data.word}</h2>
+            <h3 class="card-level">${data.level}</h3>
+            <h3 class="card-reading">${data.reading}</h3>
             <p class="card-meanings">${data.meanings}</p>
             <p class="card-pos">${data.partsOfSpeech}</p>
         `;
