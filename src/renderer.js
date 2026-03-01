@@ -1,21 +1,23 @@
-/*
- * NOTE: anywhere newWordlist() is called right now is hard coded
- * for japanese until settings and default options are added.
- */
-
 // ***** DOM REFERENCES *****
 
-const overlay = document.getElementById('overlay');
-const searchInput = document.getElementById('search-input');
-const wordlistNameInput = document.getElementById('wordlist-name');
-const settingsButton = document.getElementById('settings-button');
-const saveButton = document.getElementById('save-button');
-const deleteButton = document.getElementById('delete-button');
-const newWordlistButton = document.getElementById('new-wordlist-button');
-const searchResultContainer = document.getElementById('search-result-container');
-const wordlistWordsContainer = document.getElementById('wordlist-words-container');
-const sidebarWordlistContainer = document.getElementById('sidebar-wordlists');
-const menuContainer = document.getElementById('menu-container');
+// Save button
+const saveButton;
+
+// Delete button/menu
+const deleteMenu = document.getElementById('delete-menu');
+const deleteButton = document.getElementById('delete');
+const deleteNoButton = document.getElementById('delete-no');
+const deleteYesButton = document.getElementById('delete-yes');
+
+// New wordlist menu
+const newWordlistBtn = document.getElementById('new-wordlist-btn');
+const newWordlistMenu = document.getElementById('new-wordlist-menu');
+const newWordlistNameInput = document.getElementById('new-wordlist-name-input');
+const newWordlistCreate = document.getElementById('new-wordlist-create');
+const newWordlistLanguage = document.getElementById('new-wordlist-language');
+const newWordlistLanguageDisplay = document.getElementById('new-wordlist-language-display');
+
+// Containers
 
 // ***** WORDLIST *****
 
@@ -133,99 +135,23 @@ function appendNewWordlistCard(data) {
     wordlistWordsContainer.append(el);
 }
 
-// ***** MENU BUILDER *****
+// ***** LOGIC FOR OPENING/CLOSING MENUS *****
+let menuToClose = null;
 
-function buildMenu(container, menuDef) {
-    container.innerHTML = '';
-
-    const heading = document.createElement('h2');
-    heading.textContent = menuDef.title;
-    container.appendChild(heading);
-
-    menuDef.fields.forEach(field => {
-        const row = document.createElement('div');
-        row.classList.add('menu-row');
-
-        const label = document.createElement('label');
-        label.textContent = field.label;
-
-        let input;
-        if (field.type === 'select') {
-            input = document.createElement('select');
-            field.optionsFrom().forEach(opt => {
-                const el = document.createElement('option');
-                el.value = opt.value;
-                el.textContent = opt.label;
-                el.selected = opt.value === field.defaultFrom();
-                input.appendChild(el);
-            });
-        } else if (field.type === 'toggle') {
-            input = document.createElement('input');
-            input.type = 'checkbox';
-            input.checked = field.defaultFrom();
-        } else if (field.type === 'number') {
-            input = document.createElement('input');
-            input.type = 'number';
-            input.min = field.min;
-            input.max = field.max;
-            input.value = field.defaultFrom();
-        } else if (field.type === 'text') {
-            input = document.createElement('input');
-            input.type = 'text';
-            input.classList.add('text-bar');
-            input.placeholder = field.placeholder ?? '';
-        }
-
-        input.dataset.fieldId = field.id;
-        row.appendChild(label);
-        row.appendChild(input);
-        container.appendChild(row);
-    });
-
-    const confirmBtn = document.createElement('button');
-    confirmBtn.classList.add('menu-confirm-btn');
-    confirmBtn.textContent = menuDef.confirm.label;
-    confirmBtn.addEventListener('click', () => {
-        const values = collectMenuValues(container);
-        menuDef.confirm.action(values);
-    });
-    container.appendChild(confirmBtn);
+function openMenu(menu) {
+    closeMenu();
+    menuToClose = menu;
+    menuToClose.classList.add('open');
 }
 
-function collectMenuValues(container) {
-    const values = {};
-    container.querySelectorAll('[data-field-id]').forEach(input => {
-        const id = input.dataset.fieldId;
-        if (input.type === 'checkbox') values[id] = input.checked;
-        else if (input.type === 'number') values[id] = Number(input.value);
-        else values[id] = input.value;
-    });
-    return values;
-}
-
-function openMenu(container, menuKey) {
-    buildMenu(container, MENUS[menuKey]);
-    container.classList.add('active');
-    openOverlay(() => container.classList.remove('active'));
-}
-
-// ***** OVERLAY *****
-
-let onOverlayClose = null;
-
-function openOverlay(closeFn) {
-    onOverlayClose = closeFn;
-    overlay.classList.add('active');
-}
-
-function closeOverlay() {
-    overlay.classList.remove('active');
-    onOverlayClose?.();
-    onOverlayClose = null;
+function closeMenu() {
+    menuToClose?.classList.remove('open');
+    menuToClose = null;
 }
 
 // ***** EVENT LISTENERS *****
 
+// Keybinds
 document.addEventListener('keydown', (e) => {
     if (e.key === '/') {
         e.preventDefault();
@@ -237,11 +163,49 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// Event that closes current menu when clicking another menu button or outside of current menu
+document.addEventListener('click', (e) => {
+    if (!menuToClose) return;
+    if (e.target.closest('.menu.open')) return;
+    if (e.target.closest('#delete, #new-wordlist-btn')) return;
+    closeMenu();
+}, true);
+
+// Search input
 searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchSubmit();
 });
 
+// Delete buttons/menu
+deleteButton.addEventListener('click', () => {
+    openMenu(deleteMenu);
+});
+
+deleteNoButton.addEventListener('click', () => {
+    closeMenu();
+});
+
+deleteYesButton.addEventListener('click', () => {
+    // TODO: confirm delete — delete the current wordlist
+});
+
+// Save button
 saveButton.addEventListener('click', saveWordlist);
+
+// New wordlist menu
+newWordlistBtn.addEventListener('click', () => {
+    openMenu(newWordlistMenu);
+});
+
+newWordlistCreate.addEventListener('click', () => {
+    // TODO: create a new wordlist using newWordlistNameInput.value and selected language
+});
+
+newWordlistLanguage.addEventListener('click', () => {
+    // TODO: open language picker / cycle through languages
+});
+
+
 deleteButton.addEventListener('click', () => {
     if (!wordlist.name) {
         notify('No wordlist selected to delete', 'warn');

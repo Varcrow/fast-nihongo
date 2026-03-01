@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Fast Nihongo</title>
+    <title>Wordlists</title>
     <link rel="stylesheet" href="css/dev.css" />
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
@@ -13,7 +13,6 @@
 <body>
     <!--FIXED ITEMS-->
     <div id="notification-container"></div>
-    <div id="menu-container"></div>
 
     <!--SEARCH BAR-->
     <input class="neu-input" type="text" style="grid-area: box-1" placeholder="Search">
@@ -21,11 +20,32 @@
     <!--SIDE BAR-->
     <nav class="neu-card" style="grid-area: box-2">
         <input class="neu-input" type="text" placeholder="New wordlist">
-        <div class="buttons">
+        <div class="dual-buttons">
             <button class="neu-btn save" type="button">Save</button>
-            <button class="neu-btn delete" type="button">Delete</button>
+            <button id="delete" class="neu-btn delete" type="button">Delete</button>
         </div>
-        <button class="neu-btn wordlist" type="button">New Wordlist</button>
+
+        <!-- DELETE CONFIRMATION MENU -->
+        <div id="delete-menu" class="neu-card menu">
+            <h2>Delete current wordlist?</h2>
+            <div class="dual-buttons">
+                <button id="delete-no" class="neu-btn no" type="button">No</button>
+                <button id="delete-yes" class="neu-btn yes" type="button">Yes</button>
+            </div>
+        </div>
+
+        <!-- NEW WORDLIST BUTTON -->
+        <button id="new-wordlist-btn" class="neu-btn wordlist" type="button">New Wordlist</button>
+
+        <!-- NEW WORDLIST MENU -->
+        <div id="new-wordlist-menu" class="neu-card menu">
+            <h2>New wordlist</h2>
+            <h3 id="new-wordlist-language-display">Japanese</h3>
+            <input id="new-wordlist-name-input" class="neu-input" type="text" placeholder="Name">
+            <button id="new-wordlist-create" class="neu-btn create" type="button">Create</button>
+            <button id="new-wordlist-language" class="neu-btn language" type="button">Language</button>
+        </div>
+
         <div id="wordlists-container"></div>
         <button class="neu-btn" type="button">Settings</button>
     </nav>
@@ -36,11 +56,8 @@
         <div class="word-container" id="wordlist-words-container"></div>
     </main>
 
-    <script src="js/notify.js"></script>
-    <script src="js/wordlist.js"></script>
-    <script src="js/menus.js"></script>
-    <script src="js/settings.js"></script>
-    <script src="renderer.js"></script>
+    <!--SCRIPTS-->
+    <script src="js/input.js"></script>
 </body>
 
 </html>

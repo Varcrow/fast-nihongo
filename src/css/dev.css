@@ -30,7 +30,7 @@
 
 body {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 300px 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas:
         "box-2 box-1"
@@ -39,22 +39,6 @@ body {
     height: 100vh;
     padding: 20px;
     background-color: var(--bg);
-}
-
-/* Fixed Items */
-
-#menu-container,
-#notification-container,
-#overlay {
-    position: fixed;
-}
-
-#overlay {
-    display: none;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(2px);
-    z-index: 200;
 }
 
 /* Nav Layout */
@@ -68,6 +52,73 @@ nav {
 
 #wordlists-container {
     flex: 1;
+}
+
+/* Typography */
+
+h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    text-align: center;
+    color: #3d4a5c;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 60px;
+}
+
+h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: #3d4a5c;
+}
+
+h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+p {
+    line-height: 1.75;
+    color: var(--text-muted);
+    font-size: 0.97rem;
+}
+
+/* Fixed Items */
+
+#menu-container,
+#notification-container {
+    position: fixed;
+}
+
+/* Menu styling */
+
+.menu {
+    display: none;
+    flex-direction: column;
+    gap: 1em;
+    padding: 20px;
+    text-align: center;
+}
+
+.menu.open {
+    display: flex;
+}
+
+.dual-buttons {
+    display: flex;
+    gap: 1em;
+
+    button {
+        flex: 1;
+    }
 }
 
 /* Neumorphism Components */
