@@ -21,29 +21,29 @@
     <nav class="neu-card" style="grid-area: box-2">
         <input id="wordlist-name" class="neu-input" type="text" placeholder="New wordlist">
         <div class="dual-buttons">
-            <button id="save" class="neu-btn save" type="button">Save</button>
-            <button id="delete" class="neu-btn delete" type="button">Delete</button>
+            <button id="save" class="neu-btn" type="button">Save</button>
+            <button id="delete" class="neu-btn" type="button">Delete</button>
         </div>
 
         <!-- DELETE CONFIRMATION MENU -->
         <div id="delete-menu" class="neu-card menu">
             <h2>Delete current wordlist?</h2>
             <div class="dual-buttons">
-                <button id="delete-no" class="neu-btn no" type="button">No</button>
-                <button id="delete-yes" class="neu-btn yes" type="button">Yes</button>
+                <button id="delete-no" class="neu-btn" type="button">No</button>
+                <button id="delete-yes" class="neu-btn" type="button">Yes</button>
             </div>
         </div>
 
         <!-- NEW WORDLIST BUTTON -->
-        <button id="new-wordlist-btn" class="neu-btn wordlist" type="button">New Wordlist</button>
+        <button id="new-wordlist-btn" class="neu-btn" type="button">New Wordlist</button>
 
         <!-- NEW WORDLIST MENU -->
         <div id="new-wordlist-menu" class="neu-card menu">
             <h2>New wordlist</h2>
             <h3 id="new-wordlist-language-display">Japanese</h3>
             <input id="new-wordlist-name-input" class="neu-input" type="text" placeholder="Name">
-            <button id="new-wordlist-create" class="neu-btn create" type="button">Create</button>
-            <button id="new-wordlist-language" class="neu-btn language" type="button">Language</button>
+            <button id="new-wordlist-create" class="neu-btn" type="button">Create</button>
+            <button id="new-wordlist-language" class="neu-btn" type="button">Language</button>
         </div>
 
         <div id="wordlists-container"></div>
@@ -63,10 +63,7 @@
     </main>
 
     <!--SCRIPTS-->
-    <script src="js/notify.js"></script>
-    <script src="js/wordlist.js"></script>
-    <script src="js/settings.js"></script>
-    <script src="renderer.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

@@ -39,15 +39,6 @@ let wordlist;
 
 // ***** LANGUAGE REGISTRY *****
 
-const languageRegistry = {
-    japanese: JapaneseWordlist,
-    english: null,
-    french: null,
-};
-
-const languageIds = Object.keys(languageRegistry);
-let selectedLanguageId = languageIds[0];
-
 function setLanguageDisplay(languageId) {
     selectedLanguageId = languageId;
     newWordlistLanguageDisplay.textContent = languageId;
