@@ -1,29 +1,49 @@
 import WordlistManager from "./core/wordlistManager.js";
+import SidebarUI from "./ui/sidebar.js";
+
+const searchBar = document.getElementById('search-bar');
+const wordlistWordsContainer = document.getElementById('wordlist-words-container');
+const searchResultsContainer = document.getElementById('search-result-container');
 
 document.addEventListener('click', (e) => {
-    const action = e.target.dataset.action;
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
 
-    if (!action) return;
+    const action = target.dataset.action;
 
     switch (action) {
         case 'save-wordlist':
-            WordlistManager.saveWordlist();
-            // Refresh sidebar
+            WordlistManager.saveWordlist(SidebarUI.wordlistName);
+            SidebarUI.refreshSidebar();
             break;
 
         case 'load-wordlist':
-            WordlistManager.loadWordlist(e.target.dataset.name);
-            // Set wordlist name
-            // Load wordlist cards
+            const name = target.dataset.name;
+            SidebarUI.wordlistName = name;
+            WordlistManager.loadWordlist(name);
+            const cards = WordlistManager.mapWordsToCards();
+            wordlistWordsContainer.innerHTML = '';
+            cards.forEach(card => {
+                wordlistWordsContainer.append(card);
+            });
             break;
 
         case 'delete-wordlist':
-            // Open delete confirmation menu
             break;
 
         case 'confirm-delete':
-            // Delete wordlist
-            // Load new default wordlist
             break;
+    }
+});
+
+searchBar.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+        const values = searchBar.value.trim().split(' ').filter(Boolean);
+        searchBar.value = '';
+        if (!values.length) return;
+
+        const sections = await WordlistManager.searchAndMap(values);
+        searchResultsContainer.innerHTML = '';
+        sections.forEach(el => searchResultsContainer.appendChild(el));
     }
 });

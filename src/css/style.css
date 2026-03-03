@@ -24,6 +24,11 @@
     box-sizing: border-box;
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
 }
 
 /* Main Layout */
@@ -55,6 +60,42 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 1em;
+}
+
+/* Word containers */
+
+main {
+    display: flex;
+    padding: 20px;
+    gap: 1em;
+    overflow: hidden;
+}
+
+.word-container {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    align-content: start;
+    margin: 0;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.search-container {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-content: start;
+    padding: 20px;
+
+    h2 {
+        text-align: center;
+    }
 }
 
 /* Typography */
