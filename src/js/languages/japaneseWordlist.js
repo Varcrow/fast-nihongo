@@ -50,13 +50,14 @@ export class JapaneseWordlist extends Wordlist {
     buildCard(data) {
         const el = document.createElement('div');
         el.classList.add('neu-card');
+        el.classList.add('word-card');
         el.dataset.word = JSON.stringify(data);
         el.innerHTML = `
-            <h2 class="card-word">${data.word}</h2>
-            <h3 class="card-level">${data.level}</h3>
-            <h3 class="card-reading">${data.reading}</h3>
-            <p class="card-meanings">${data.meanings}</p>
-            <p class="card-pos">${data.partsOfSpeech}</p>
+            <h2>${data.word}</h2>
+            <h3>${data.level}</h3>
+            <h3>${data.reading}</h3>
+            <p>${data.meanings}</p>
+            <p>${data.partsOfSpeech}</p>
         `;
         return el;
     }

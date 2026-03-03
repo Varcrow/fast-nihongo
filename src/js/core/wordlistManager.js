@@ -28,7 +28,7 @@ class WordlistManager {
     mapWordsToCards() {
         return this.currentList.words.map(data => {
             const card = this.getCard(data);
-            card.dataset.rightClick = 'delete-card';
+            card.dataset.action = 'remove-word';
             return card;
         });
     }
@@ -39,23 +39,21 @@ class WordlistManager {
     async searchAndMap(values) {
         const searches = values.map(async value => {
             const results = await this.currentList.search(value);
-
             const section = document.createElement('div');
-            const header = document.createElement('h2');
+            const header = document.createElement('h3'); // h3 not h2, styled as label
+            header.classList.add('search-header');
             header.textContent = value;
             section.appendChild(header);
-
-            if (!results) return section; // still return header even if no results
-
-            const container = document.createElement('div');
-            container.classList.add('word-container');
-            results.forEach(data => container.appendChild(this.getCard(data)));
-            section.appendChild(container);
-
+            if (results) {
+                results.forEach(data => {
+                    const card = this.getCard(data);
+                    card.dataset.action = 'add-word';
+                    section.appendChild(card); // flat, no nested grid
+                });
+            }
             return section;
         });
-
-        return Promise.all(searches); // wait for all searches to finish
+        return Promise.all(searches);
     }
 }
 

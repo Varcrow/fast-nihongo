@@ -33,6 +33,18 @@ document.addEventListener('click', (e) => {
 
         case 'confirm-delete':
             break;
+
+        case 'add-word':
+            const word = JSON.parse(e.target.dataset.word);
+            if (WordlistManager.currentList.addWord(word)) {
+                let card = WordlistManager.getCard(word);
+                card.dataset.action = 'remove-word';
+                wordlistWordsContainer.append(card);
+            }
+            break;
+
+        case 'remove-word':
+            break;
     }
 });
 

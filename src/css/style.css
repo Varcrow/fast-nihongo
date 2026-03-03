@@ -44,6 +44,7 @@ body {
     height: 100vh;
     padding: 20px;
     background-color: var(--bg);
+    overflow: hidden;
 }
 
 /* Nav Layout */
@@ -66,9 +67,10 @@ nav {
 
 main {
     display: flex;
-    padding: 20px;
     gap: 1em;
     overflow: hidden;
+    margin: -20px;
+    padding: 20px;
 }
 
 .word-container {
@@ -80,7 +82,7 @@ main {
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 16px;
+    gap: 1em;
 }
 
 .search-container {
@@ -89,13 +91,15 @@ main {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1em;
     align-content: start;
     padding: 20px;
+}
 
-    h2 {
-        text-align: center;
-    }
+.search-header {
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 /* Typography */
@@ -142,7 +146,6 @@ p {
     display: none;
     flex-direction: column;
     gap: 1em;
-    padding: 20px;
     text-align: center;
 }
 
@@ -163,11 +166,12 @@ p {
 /* Neumorphism Components */
 
 .neu-card {
+    padding: 20px;
     background: var(--bg);
     border-radius: var(--radius);
     box-shadow:
-        8px 8px var(--blur) var(--shadow-dark),
-        -8px -8px var(--blur) var(--shadow-light)
+        6px 6px 12px var(--shadow-dark),
+        -6px -6px 12px var(--shadow-light);
 }
 
 .neu-input {
