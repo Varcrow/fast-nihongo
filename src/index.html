@@ -21,8 +21,9 @@
     <nav class="neu-card" style="grid-area: box-2">
         <input id="wordlist-name" class="neu-input" type="text" placeholder="New wordlist">
         <div class="dual-buttons">
-            <button id="save" class="neu-btn" type="button">Save</button>
-            <button id="delete" class="neu-btn" type="button">Delete</button>
+            <button id="save" class="neu-btn" type="button" data-action="save-wordlist">Save</button>
+            <button id="delete" class="neu-btn" type="button" data-action="toggle-menu"
+                data-target="delete-menu">Delete</button>
         </div>
 
         <!-- DELETE CONFIRMATION MENU -->
@@ -35,7 +36,8 @@
         </div>
 
         <!-- NEW WORDLIST BUTTON -->
-        <button id="new-wordlist-btn" class="neu-btn" type="button">New Wordlist</button>
+        <button id="new-wordlist-btn" class="neu-btn" type="button" data-action="toggle-menu"
+            data-target="new-wordlist-menu">New Wordlist</button>
 
         <!-- NEW WORDLIST MENU -->
         <div id="new-wordlist-menu" class="neu-card menu">
@@ -48,6 +50,7 @@
 
         <div id="wordlists-container"></div>
 
+        <!-- SETTINGS MENU -->
         <div id="settings-menu" class="neu-card menu">
             <h2>Settings</h2>
             <div id="settings-fields"></div>

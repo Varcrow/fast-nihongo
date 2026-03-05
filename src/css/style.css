@@ -142,7 +142,6 @@ p {
 /* Menu styling */
 
 .menu {
-    flex: 0;
     display: none;
     flex-direction: column;
     gap: 1em;
@@ -150,8 +149,7 @@ p {
 }
 
 .menu.open {
-    display: flex;
-    flex: 1;
+    display: block;
 }
 
 .dual-buttons {

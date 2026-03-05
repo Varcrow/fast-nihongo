@@ -14,7 +14,7 @@ class WordlistManager {
     }
 
     saveWordlist(name) {
-        this.currentList = name;
+        this.currentList.name = name;
         this.currentList.save();
     }
 
@@ -40,7 +40,7 @@ class WordlistManager {
         const searches = values.map(async value => {
             const results = await this.currentList.search(value);
             const section = document.createElement('div');
-            const header = document.createElement('h3'); // h3 not h2, styled as label
+            const header = document.createElement('h3');
             header.classList.add('search-header');
             header.textContent = value;
             section.appendChild(header);
@@ -48,7 +48,7 @@ class WordlistManager {
                 results.forEach(data => {
                     const card = this.getCard(data);
                     card.dataset.action = 'add-word';
-                    section.appendChild(card); // flat, no nested grid
+                    section.appendChild(card);
                 });
             }
             return section;

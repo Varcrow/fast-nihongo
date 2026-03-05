@@ -7,6 +7,12 @@ const searchResultsContainer = document.getElementById('search-result-container'
 
 document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-action]');
+
+    // Close menus on outside click
+    if (!e.target.closest('.menu') && !e.target.closest('[data-action="toggle-menu"]')) {
+        document.querySelectorAll('.menu.open').forEach(m => m.classList.remove('open'));
+    }
+
     if (!target) return;
 
     const action = target.dataset.action;
@@ -31,11 +37,8 @@ document.addEventListener('click', (e) => {
         case 'delete-wordlist':
             break;
 
-        case 'confirm-delete':
-            break;
-
         case 'add-word':
-            const word = JSON.parse(e.target.dataset.word);
+            const word = JSON.parse(target.dataset.word);
             if (WordlistManager.currentList.addWord(word)) {
                 let card = WordlistManager.getCard(word);
                 card.dataset.action = 'remove-word';
@@ -44,6 +47,15 @@ document.addEventListener('click', (e) => {
             break;
 
         case 'remove-word':
+            break;
+
+        case 'toggle-menu':
+            const menuId = target.dataset.target;
+            document.getElementById(menuId).classList.toggle('open');
+            break;
+
+        case 'close-menu':
+            document.getElementById(target.dataset.target).classList.remove('open');
             break;
     }
 });
