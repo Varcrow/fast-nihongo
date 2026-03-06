@@ -1,72 +1,119 @@
 <!doctype html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Wordlists</title>
     <link rel="stylesheet" href="css/style.css" />
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
-        rel="stylesheet">
-</head>
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <!--FIXED ITEMS-->
     <div id="notification-container"></div>
 
     <!--SEARCH BAR-->
-    <input id="search-bar" class="neu-input" type="text" style="grid-area: box-1" placeholder="Search">
+    <input
+      id="search-bar"
+      class="neu-input"
+      type="text"
+      style="grid-area: box-1"
+      placeholder="Search"
+    />
 
     <!--SIDE BAR-->
     <nav class="neu-card" style="grid-area: box-2">
-        <input id="wordlist-name" class="neu-input" type="text" placeholder="New wordlist">
+      <input
+        id="wordlist-name"
+        class="neu-input"
+        type="text"
+        placeholder="New wordlist"
+      />
+      <div class="dual-buttons">
+        <button
+          id="save"
+          class="neu-btn"
+          type="button"
+          data-action="save-wordlist"
+        >
+          Save
+        </button>
+        <button
+          id="delete"
+          class="neu-btn"
+          type="button"
+          data-action="toggle-menu"
+          data-target="delete-menu"
+        >
+          Delete
+        </button>
+      </div>
+
+      <!-- DELETE CONFIRMATION MENU -->
+      <div id="delete-menu" class="neu-card menu">
+        <h2>Delete current wordlist?</h2>
         <div class="dual-buttons">
-            <button id="save" class="neu-btn" type="button" data-action="save-wordlist">Save</button>
-            <button id="delete" class="neu-btn" type="button" data-action="toggle-menu"
-                data-target="delete-menu">Delete</button>
+          <button id="delete-no" class="neu-btn" type="button">No</button>
+          <button
+            id="delete-yes"
+            class="neu-btn"
+            type="button"
+            data-action="delete-wordlist"
+          >
+            Yes
+          </button>
         </div>
+      </div>
 
-        <!-- DELETE CONFIRMATION MENU -->
-        <div id="delete-menu" class="neu-card menu">
-            <h2>Delete current wordlist?</h2>
-            <div class="dual-buttons">
-                <button id="delete-no" class="neu-btn" type="button">No</button>
-                <button id="delete-yes" class="neu-btn" type="button">Yes</button>
-            </div>
-        </div>
+      <!-- NEW WORDLIST BUTTON -->
+      <button
+        id="new-wordlist-btn"
+        class="neu-btn"
+        type="button"
+        data-action="toggle-menu"
+        data-target="new-wordlist-menu"
+      >
+        New Wordlist
+      </button>
 
-        <!-- NEW WORDLIST BUTTON -->
-        <button id="new-wordlist-btn" class="neu-btn" type="button" data-action="toggle-menu"
-            data-target="new-wordlist-menu">New Wordlist</button>
+      <!-- NEW WORDLIST MENU -->
+      <div id="new-wordlist-menu" class="neu-card menu">
+        <h2>New wordlist</h2>
+        <h3 id="new-wordlist-language-display">Japanese</h3>
+        <input
+          id="new-wordlist-name-input"
+          class="neu-input"
+          type="text"
+          placeholder="Name"
+        />
+        <button id="new-wordlist-create" class="neu-btn" type="button">
+          Create
+        </button>
+        <button id="new-wordlist-language" class="neu-btn" type="button">
+          Language
+        </button>
+      </div>
 
-        <!-- NEW WORDLIST MENU -->
-        <div id="new-wordlist-menu" class="neu-card menu">
-            <h2>New wordlist</h2>
-            <h3 id="new-wordlist-language-display">Japanese</h3>
-            <input id="new-wordlist-name-input" class="neu-input" type="text" placeholder="Name">
-            <button id="new-wordlist-create" class="neu-btn" type="button">Create</button>
-            <button id="new-wordlist-language" class="neu-btn" type="button">Language</button>
-        </div>
+      <div id="wordlists-container"></div>
 
-        <div id="wordlists-container"></div>
-
-        <!-- SETTINGS MENU -->
-        <div id="settings-menu" class="neu-card menu">
-            <h2>Settings</h2>
-            <div id="settings-fields"></div>
-            <button id="settings-save" class="neu-btn" type="button">Save</button>
-        </div>
-        <button id="settings" class="neu-btn" type="button">Settings</button>
+      <!-- SETTINGS MENU -->
+      <div id="settings-menu" class="neu-card menu">
+        <h2>Settings</h2>
+        <div id="settings-fields"></div>
+        <button id="settings-save" class="neu-btn" type="button">Save</button>
+      </div>
+      <button id="settings" class="neu-btn" type="button">Settings</button>
     </nav>
 
     <!--CONTENT DISPLAY-->
     <main style="grid-area: box-3">
-        <div class="neu-card word-container" id="wordlist-words-container"></div>
-        <div class="neu-card search-container" id="search-result-container"></div>
+      <div class="neu-card word-container" id="wordlist-words-container"></div>
+      <div class="neu-card search-container" id="search-result-container"></div>
     </main>
 
     <!--SCRIPTS-->
     <script type="module" src="js/main.js"></script>
-</body>
-
+  </body>
 </html>
