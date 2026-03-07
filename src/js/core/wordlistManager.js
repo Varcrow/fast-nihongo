@@ -44,23 +44,33 @@ class WordlistManager {
    * For searching and making a section for each value
    */
   async searchAndMap(values) {
-    const searches = values.map(async (value) => {
-      const results = await this.currentList.search(value);
-      const section = document.createElement("div");
-      const header = document.createElement("h3");
-      header.classList.add("search-header");
-      header.textContent = value;
-      section.appendChild(header);
-      if (results) {
-        results.forEach((data) => {
-          const card = this.getCard(data);
-          card.dataset.action = "add-word";
-          section.appendChild(card);
-        });
-      }
-      return section;
-    });
-    return Promise.all(searches);
+    const array = [];
+
+    await Promise.all(
+      values.map(async (value) => {
+        const results = await this.currentList.search(value);
+
+        const header = document.createElement("h3");
+        header.classList.add("search-header");
+        header.textContent = value;
+        array.push(header);
+
+        const wordContainer = document.createElement("div");
+        wordContainer.classList.add("word-container");
+        wordContainer.classList.add("search");
+        array.push(wordContainer);
+
+        if (results) {
+          results.forEach((data) => {
+            const card = this.getCard(data);
+            card.dataset.action = "add-word";
+            wordContainer.appendChild(card);
+          });
+        }
+      }),
+    );
+
+    return array;
   }
 }
 
