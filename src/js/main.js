@@ -65,6 +65,10 @@ document.addEventListener("click", (e) => {
     case "remove-word":
       break;
 
+    case "toggle-search-results":
+      searchResultsContainer.classList.toggle("open");
+      break;
+
     case "toggle-menu":
       const menuId = target.dataset.target;
       document.getElementById(menuId).classList.toggle("open");
@@ -85,5 +89,7 @@ searchBar.addEventListener("keydown", async (e) => {
     const sections = await WordlistManager.searchAndMap(values);
     searchResultsContainer.innerHTML = "";
     sections.forEach((el) => searchResultsContainer.appendChild(el));
+
+    searchResultsContainer.classList.add("open");
   }
 });

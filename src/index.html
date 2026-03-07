@@ -15,13 +15,17 @@
     <div id="notification-container"></div>
 
     <!--SEARCH BAR-->
-    <input
-      id="search-bar"
-      class="neu-input"
-      type="text"
-      style="grid-area: box-1"
-      placeholder="Search"
-    />
+    <div style="grid-area: box-1">
+      <input
+        id="search-bar"
+        class="neu-input"
+        type="text"
+        placeholder="Search"
+      />
+      <button class="neu-btn" type="button" data-action="toggle-search-results">
+        Show
+      </button>
+    </div>
 
     <!--SIDE BAR-->
     <nav class="neu-card" style="grid-area: box-2">

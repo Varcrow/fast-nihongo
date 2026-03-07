@@ -95,11 +95,14 @@ main {
   flex: 1;
   min-width: 0;
   overflow-y: auto;
-  display: flex;
   flex-direction: column;
   gap: 1em;
   align-content: start;
   padding: 20px;
+}
+
+.search-container.open {
+  display: flex;
 }
 
 .search-header {
